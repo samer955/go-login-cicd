@@ -26,3 +26,7 @@ git commit -m "Update version in manifest to $APP_VERSION"
 
 # Push changes to the repository
 git push origin main
+
+# Clean up
+cd ..
+rm -rf repo
