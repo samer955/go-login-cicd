@@ -3,6 +3,7 @@
 # Set the desired version number
 APP_VERSION=$1
 GITHUB_TOKEN=$2
+GITHUB_ACTOR=$3
 
 
 
@@ -15,6 +16,10 @@ sed -i "s/image: ghcr.io\/samer955\/go-login-cicd:.*/image: ghcr.io\/samer955\/g
 
 # Set the remote URL to use the GITHUB_TOKEN secret
 git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/samer955/argocd-config-login.git
+
+# Commit and push the changes to the repository
+git config user.email "$GITHUB_ACTOR@github.com"
+git config user.name "$GITHUB_ACTOR"
 
 # Add changes and commit
 git add dev/deployment.yaml
