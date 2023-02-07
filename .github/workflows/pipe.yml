@@ -76,6 +76,6 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-    - name: Update manifest version
+    - name: Run script to update manifest
       run: |
         bash update_app_version.sh "$IMAGE_TAG" "$GITHUB_TOKEN" "$GITHUB_ACTOR"
