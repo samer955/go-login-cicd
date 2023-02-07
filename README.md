@@ -1,5 +1,8 @@
 Example of a little project which contains a CI/CD pipeline in order to test and build the code, dockerize it, publish in the github Registry (as package) and running
 the script `update_app_version.sh` in order to trigger ArgoCD by updating the version in the deployment manifest.  
+
+Here you find the infrastucture/configuration repository for this project --> https://github.com/samer955/argocd-config-login
+
 The following picture shows the CI/CD pipeline inspiration idea.
 
 
