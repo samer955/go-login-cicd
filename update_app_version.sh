@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#Goal of this script is to update after every push the image:tag of the kubernetes Manifest in order to trigger argoCD and update the running app
-on kubernetes (Continuous Delivery).
+#Goal of this script is to update after every push the image:tag of the kubernetes Manifest in order to trigger argoCD and update the running app on kubernetes (Continuous Delivery).
 
 # Env variables passed from the CI Pipeline (Github Workflow).
 APP_VERSION=$1
