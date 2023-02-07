@@ -1,4 +1,4 @@
-Example of a little project which contains a pipeline CI/CD in order to test and build the code, dockerize it, publish in the github Registry (as package) and running
+Example of a little project which contains a CI/CD pipeline in order to test and build the code, dockerize it, publish in the github Registry (as package) and running
 the script `update_app_version.sh` in order to trigger ArgoCD by updating the version in the deployment manifest.  
 The following picture shows the CI/CD pipeline inspiration idea.
 
