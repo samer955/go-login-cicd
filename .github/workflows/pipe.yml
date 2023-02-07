@@ -20,6 +20,7 @@ env:
   IMAGE_NAME: ${{ github.repository }} # in this case will be samer955/book-example
   IMAGE_TAG: 1.0.${{ github.run_number }} # it will increase the tag number on every push starting from 1.0.0
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
+  GITHUB_ACTOR: ${{ github.actor }}
 
 jobs:
 
@@ -77,4 +78,4 @@ jobs:
 
     - name: Update manifest version
       run: |
-        bash update_app_version.sh "$IMAGE_TAG" "$GITHUB_TOKEN"
+        bash update_app_version.sh "$IMAGE_TAG" "$GITHUB_TOKEN" "GITHUB_ACTOR"
