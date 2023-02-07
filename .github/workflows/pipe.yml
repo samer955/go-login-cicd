@@ -78,4 +78,4 @@ jobs:
 
     - name: Update manifest version
       run: |
-        bash update_app_version.sh "$IMAGE_TAG" "$GITHUB_TOKEN" "GITHUB_ACTOR"
+        bash update_app_version.sh "$IMAGE_TAG" "$GITHUB_TOKEN" "$GITHUB_ACTOR"
