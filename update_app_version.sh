@@ -16,10 +16,6 @@ sed -i "s/image: ghcr.io\/samer955\/go-login-cicd:.*/image: ghcr.io\/samer955\/g
 # Set the remote URL to use the GITHUB_TOKEN secret
 git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/samer955/argocd-config-login.git
 
-# Commit and push the changes to the repository
-git config user.email "samer.osman95@hotmail.com"
-git config user.name "samer955"
-
 # Add changes and commit
 git add dev/deployment.yaml
 git commit -m "Update version in manifest to $APP_VERSION"
