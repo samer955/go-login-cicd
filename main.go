@@ -9,13 +9,18 @@ import (
 	"os"
 )
 
+type Message struct {
+	Error   string
+	Success string
+}
+
 func main() {
 
 	http.HandleFunc("/", handle)
 
 	fmt.Println("Starting webserver on localhost:8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Error starting the server")
+		fmt.Println("Error starting the server", err)
 		os.Exit(1)
 	}
 
@@ -47,12 +52,16 @@ func signUpUser(w http.ResponseWriter, r *http.Request) {
 	newUser := getUser(r)
 	err := user.Userservice.CreateUser(newUser)
 	if err != nil {
-		getRegistrationForm(w, err)
+		message := Message{Error: err.Error()}
+		getRegistrationForm(w, message)
 		return
 	}
-	fmt.Fprint(w, "<h1> User created: "+newUser.Email+" "+newUser.Password+"</h1>")
 
-	sendEmail()
+	success := "New user created: " + newUser.Email
+	message := Message{Success: success}
+
+	sendEmail(newUser.Email)
+	getRegistrationForm(w, message)
 
 }
 
@@ -75,11 +84,12 @@ func signInUser(w http.ResponseWriter, r *http.Request) {
 	ok := user.Userservice.VerifyUser(loginUser)
 
 	if !ok {
-		getLoginForm(w, "User or password doesnt match or not exists")
+		errorMsg := Message{Error: "User or password doesnt match or not exists"}
+		getLoginForm(w, errorMsg)
 		return
 	}
-
-	getLoginForm(w, "User succesfully logged-in!")
+	successMsg := Message{Success: "User successfully logged-in"}
+	getLoginForm(w, successMsg)
 
 }
 
@@ -91,9 +101,8 @@ func templating(w http.ResponseWriter, temp string, data any) {
 	t.ExecuteTemplate(w, temp, data)
 }
 
-// call the mail microservice
-func sendEmail() {
+func sendEmail(username string) {
 
-	fmt.Println("email sent")
+	fmt.Println("Email sent to: " + username)
 
 }

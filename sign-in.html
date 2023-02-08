@@ -12,10 +12,20 @@
 <body>
 <div class="container">
 
-    <p>{{.}}</p>
+    {{if .Error}}
+    <div class="alert alert-danger" role="alert">
+        {{.Error}}
+    </div>
+    {{end}}
+
+    {{if .Success}}
+    <div class="alert alert-success" role="alert">
+        {{.Success}}
+    </div>
+    {{end}}
 
     <form class="form-signin" action="/sign-in">
-        <h1 class="form-signin-heading">Sign in</h1>
+        <h1 class="form-signin-heading">Login</h1>
         <p>
             <label for="username" class="sr-only">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
