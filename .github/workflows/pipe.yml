@@ -46,8 +46,8 @@ jobs:
     - name: Test  # Test the go Code
       run: go test -v ./...
       
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
