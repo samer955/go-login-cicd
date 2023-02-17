@@ -50,7 +50,6 @@ jobs:
       uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       
     - name: Set up Docker Buildx # setup for the docker container 
       uses: docker/setup-buildx-action@v2
