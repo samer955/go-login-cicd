@@ -46,7 +46,7 @@ jobs:
     - name: Test  # Test the go Code
       run: go test -v ./...
       
-    - name: Deploy to remote server
+    - name: Tunnel to remote server
       uses: appleboy/ssh-action@master
       with:
         host: 13.50.58.28
