@@ -56,15 +56,11 @@ jobs:
       run: touch config.ovpn
       
     - name: Write VPN config to file
-      run: echo "${{ secrets.CONFIG_VPN }}" > config.ovpn | cat config.ovpn
+      run: echo "${{ secrets.CONFIG_VPN }}" > config.ovpn
         
     - name: Connect VPN
       run: cat config.ovpn |
-        sudo openvpn --config config.ovpn  --log "vpn.log" --daemon
-
-    - name: Wait for a VPN connection
-      timeout-minutes: 1
-      run: until ping -c1 ${{ secrets.SONAR_HOST_URL }}; do sleep 2; done
+        sudo openvpn --config config.ovpn --daemon
       
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
