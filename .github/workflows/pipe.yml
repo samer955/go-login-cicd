@@ -21,6 +21,7 @@ env:
   IMAGE_TAG: 1.0.${{ github.run_number }} # it will increase the tag number on every push starting from 1.0.0
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
   GITHUB_ACTOR: ${{ github.actor }}
+  VPN_CONFIG: ${{ secrets.CONFIG_VPN }}
 
 jobs:
 
@@ -46,18 +47,35 @@ jobs:
     - name: Test  # Test the go Code
       run: go test -v ./...
       
-    - name: Tunnel to remote server
-      uses: appleboy/ssh-action@master
-      with:
-        host: 13.50.58.28
-        username: admin
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Install OpenVPN
+      run: |
+        sudo apt-get update
+        sudo apt-get --assume-yes --no-install-recommends install openvpn
+        
+    - name: Create empty config file
+      run: touch config.ovpn
+      
+    - name: Write VPN config to file
+      run: echo "$VPN_CONFIG" > config.ovpn
+        
+    - name: Connect VPN
+      run: sudo openvpn --config config.ovpn  --log "vpn.log" --daemon
+
+    - name: Wait for a VPN connection
+      timeout-minutes: 1
+      run: until ping -c1 ${{ secrets.SONAR_HOST_URL }}; do sleep 2; done
       
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    
+    - name: Kill VPN connection
+      if: always()
+      run: |
+          sudo chmod 777 vpn.log
+          sudo killall openvpn 
       
     - name: Set up Docker Buildx # setup for the docker container 
       uses: docker/setup-buildx-action@v2
