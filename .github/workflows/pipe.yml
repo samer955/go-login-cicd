@@ -22,7 +22,6 @@ env:
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
   GITHUB_ACTOR: ${{ github.actor }}
   VPN_CONFIG: ${{ secrets.CONFIG_VPN }}
-  VPN_CONFIG2: "ciao come stai"
 
 jobs:
 
@@ -57,20 +56,17 @@ jobs:
       run: touch config.ovpn
       
     - name: Write VPN config to file
-      run: echo $VPN_CONFIG2 > config.ovpn
+      run: echo "${{ secrets.CONFIG_VPN }}" > config.ovpn
       
-    - name: printout
-      run: cat config.ovpn
-      
-    - name: Write VPN config to file
-      run: echo "$VPN_CONFIG2" > config2.ovpn
-      
-    - name: printout
-      run: cat config2.ovpn
+    - name: LS
+      run: ls -a | cat config.ovpn
         
     - name: Connect VPN
-      run: cat config.ovpn |
-        sudo openvpn --config config.ovpn --daemon
+      run: sudo openvpn --config config.ovpn --log "vpn.log" --daemon
+      
+    - name: Wait for a VPN connection
+      timeout-minutes: 1
+      run: until ping -c1 192.168.0.138; do sleep 2; done
       
     - name: SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@master
