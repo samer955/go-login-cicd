@@ -51,6 +51,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get --assume-yes --no-install-recommends install openvpn
+        sudo apt install network-manager-openvpn 
         
     - name: Create empty config file
       run: touch config.ovpn
@@ -59,10 +60,11 @@ jobs:
       run: echo "${{ secrets.CONFIG_VPN }}" > config.ovpn
       
     - name: LS
-      run: ls -a | cat config.ovpn
+      run: ls -a
         
     - name: Connect VPN
       run: sudo openvpn --config config.ovpn --log "vpn.log" --daemon
+      
       
     - name: Wait for a VPN connection
       timeout-minutes: 1
