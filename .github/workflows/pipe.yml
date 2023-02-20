@@ -63,7 +63,7 @@ jobs:
       run: ls -a
         
     - name: Connect VPN
-      run: sudo openvpn --config config.ovpn --log "vpn.log" --daemon
+      run: sudo -b openvpn --config config.ovpn
       
       
     - name: Wait for a VPN connection
