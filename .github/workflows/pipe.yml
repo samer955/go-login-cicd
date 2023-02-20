@@ -22,6 +22,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
   GITHUB_ACTOR: ${{ github.actor }}
   VPN_CONFIG: ${{ secrets.CONFIG_VPN }}
+  VPN_CONFIG2: "ciao come stai"
 
 jobs:
 
@@ -56,7 +57,16 @@ jobs:
       run: touch config.ovpn
       
     - name: Write VPN config to file
-      run: echo "${{ secrets.CONFIG_VPN }}" > config.ovpn
+      run: echo $VPN_CONFIG2 > config.ovpn
+      
+    - name: printout
+      run: cat config.ovpn
+      
+    - name: Write VPN config to file
+      run: echo "$VPN_CONFIG2" > config2.ovpn
+      
+    - name: printout
+      run: cat config2.ovpn
         
     - name: Connect VPN
       run: cat config.ovpn |
