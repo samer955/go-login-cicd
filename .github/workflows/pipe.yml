@@ -47,16 +47,20 @@ jobs:
     - name: Test  # Test the go Code
       run: go test -v ./...
       
-    - name: Deploy to remote server
+    - name: Connecting to remote server
       uses: appleboy/ssh-action@master
       with:
         host: 13.50.58.28
         username: admin
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        keepalive: true
+      
       
     - name: SonarQube analysis
       uses: sonarsource/sonarqube-scan-action@master
+      with:
+        host: 13.50.58.28
+        username: admin
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
