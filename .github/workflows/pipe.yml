@@ -47,40 +47,17 @@ jobs:
     - name: Test  # Test the go Code
       run: go test -v ./...
       
-    - name: Install OpenVPN
-      run: |
-        sudo apt-get update
-        sudo apt-get --assume-yes --no-install-recommends install openvpn
-        sudo apt install network-manager-openvpn 
-        
-    - name: Create empty config file
-      run: touch config.ovpn
-      
-    - name: Write VPN config to file
-      run: echo "${{ secrets.CONFIG_VPN }}" > config.ovpn
-      
-    - name: LS
-      run: ls -a
-        
-    - name: Connect VPN
-      run: sudo -b openvpn --config config.ovpn
-      
-      
-    - name: Wait for a VPN connection
-      timeout-minutes: 1
-      run: until ping -c1 192.168.0.138; do sleep 2; done
-      
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@master
+    - name: SonarQube analysis
+    - uses: sonarsource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    
-    - name: Kill VPN connection
-      if: always()
-      run: |
-          sudo chmod 777 vpn.log
-          sudo killall openvpn 
+      # SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # If you wish to fail your job when the Quality Gate is red, uncomment the
+      # following lines. This would typically be used to fail a deployment.
+      # - uses: sonarsource/sonarqube-quality-gate-action@master
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
     - name: Set up Docker Buildx # setup for the docker container 
       uses: docker/setup-buildx-action@v2
