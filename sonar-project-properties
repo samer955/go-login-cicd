@@ -1,3 +1,1 @@
 sonar.projectKey=test
-sonar.web.host=0.0.0.0
-sonar.web.port=9000
