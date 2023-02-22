@@ -47,27 +47,19 @@ jobs:
     - name: Test  # Test the go Code
       run: go test -v ./...
       
-    - name: Connecting to remote server
-      uses: appleboy/ssh-action@master
+    - name: Add SSH key to agent
+      uses: webfactory/ssh-agent@v0.4.0
       with:
-        host: 13.50.58.28
-        username: admin
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-      
-      
-    - name: SonarQube Quality Gate check
-      id: sonarqube-quality-gate-check
-      uses: sonarsource/sonarqube-quality-gate-action@master
-      with:
-        scanMetadataReportFile: target/sonar/report-task.txt
-      # Force to fail step after specific time.
-      timeout-minutes: 5
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Connect to server
+      run: ssh admin@13.50.58.28
+    - name: SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@master
       env:
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-       #SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       
-    
-      
+       
     - name: Set up Docker Buildx # setup for the docker container 
       uses: docker/setup-buildx-action@v2
       
