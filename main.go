@@ -98,7 +98,10 @@ func templating(w http.ResponseWriter, temp string, data any) {
 	if err != nil {
 		log.Fatal("Error parsing template: ", temp)
 	}
-	t.ExecuteTemplate(w, temp, data)
+	err = t.ExecuteTemplate(w, temp, data)
+	if err != nil {
+		log.Fatalf("Unable to execute the template: %s\n", err.Error())
+	}
 }
 
 func sendEmail(username string) {
