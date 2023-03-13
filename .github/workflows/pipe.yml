@@ -21,7 +21,6 @@ env:
   IMAGE_TAG: 1.0.${{ github.run_number }} # it will increase the tag number on every push starting from 1.0.0
   GITHUB_TOKEN: ${{ secrets.TOKEN }}
   GITHUB_ACTOR: ${{ github.actor }}
-  VPN_CONFIG: ${{ secrets.CONFIG_VPN }}
 
 jobs:
 
