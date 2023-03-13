@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 type Message struct {
@@ -14,13 +15,24 @@ type Message struct {
 	Success string
 }
 
+const webPort = "8080"
+
 func main() {
 
 	http.HandleFunc("/", handle)
 
-	fmt.Println("Starting webserver on localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Println("Error starting the server", err)
+	//create server
+
+	server := &http.Server{
+		Addr:         fmt.Sprintf(":%s", webPort),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	log.Println("Starting webserver on localhost:8080")
+
+	if err := server.ListenAndServe(); err != nil {
+		log.Println("Error starting the server. ", err)
 		os.Exit(1)
 	}
 
