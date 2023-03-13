@@ -70,6 +70,11 @@ jobs:
 
           # Optional: if set to true then the action don't cache or restore ~/.cache/go-build.
           skip-build-cache: true
+          
+    - name: Run Gosec Security Scanner
+      uses: securego/gosec@master
+      with:
+          args: ./...
 
       
     - name: Set up Docker Buildx # setup for the docker container 
